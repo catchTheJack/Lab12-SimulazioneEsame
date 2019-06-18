@@ -54,5 +54,78 @@ public class EventsDao {
 			return null ;
 		}
 	}
+	
+	//____________________________________
+	//METODI PER LA RESTITUZIONE DELLA MEDIA DELLE LATITUDINI E LONGITUDINI
+	
+	public Double getAvgLat(int anno, int id){
+		String sql = "SELECT AVG(geo_lat) AS latavg  "
+				+ "FROM events "
+				+ "WHERE district_id=? AND YEAR(reported_date)=? AND is_crime=1";
+		try {
+			Connection conn = DBConnect.getConnection() ;
+			
+		
+			
+			PreparedStatement st = conn.prepareStatement(sql) ;
+			st.setInt(1, id);
+			st.setInt(2, anno);
+			ResultSet res = st.executeQuery() ;
+			
+			if(res.next()) {
+				try {
+					conn.close();
+					return res.getDouble("latavg");
+					
+				} catch (Throwable t) {
+					t.printStackTrace();
+					System.out.println(res.getInt("id"));
+				}
+			}
+			
+			conn.close();
+			return null ;
 
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null ;
+		}
+	}
+	
+	
+	public Double getAvgLon(int anno, int id){
+		String sql = "SELECT AVG(geo_lon) AS lonavg  "
+				+ "FROM events "
+				+ "WHERE district_id=? AND YEAR(reported_date)=? AND is_crime=1";
+		try {
+			Connection conn = DBConnect.getConnection() ;
+			
+			
+			PreparedStatement st = conn.prepareStatement(sql) ;
+			st.setInt(1, id);
+			st.setInt(2, anno);
+			ResultSet res = st.executeQuery() ;
+			
+			if(res.next()) {
+				try {
+					conn.close();
+					return res.getDouble("lonavg");
+					
+				} catch (Throwable t) {
+					t.printStackTrace();
+					System.out.println(res.getInt("id"));
+				}
+			}
+			
+			conn.close();
+			return null;
+			
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null ;
+		}
+	}
 }

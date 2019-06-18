@@ -17,7 +17,8 @@ import javafx.scene.control.TextField;
 
 public class CrimesController {
 
-	private Model model;
+		Model model = new Model();
+	
 	
     @FXML // ResourceBundle that was given to the FXMLLoader
     private ResourceBundle resources;
@@ -26,7 +27,7 @@ public class CrimesController {
     private URL location;
 
     @FXML // fx:id="boxAnno"
-    private ComboBox<?> boxAnno; // Value injected by FXMLLoader
+    private ComboBox<Integer> boxAnno; // Value injected by FXMLLoader
 
     @FXML // fx:id="boxMese"
     private ComboBox<?> boxMese; // Value injected by FXMLLoader
@@ -48,6 +49,10 @@ public class CrimesController {
 
     @FXML
     void doCreaReteCittadina(ActionEvent event) {
+    	txtResult.clear();
+    	int anno = boxAnno.getValue();
+    	model.creaGrafo(anno);
+    	txtResult.appendText(model.vicinato());
     	
     }
 
@@ -70,5 +75,8 @@ public class CrimesController {
     
     public void setModel(Model model) {
     	this.model = model;
+    	for( int i = 2014 ; i<2018 ; i++) {
+    	boxAnno.getItems().add(i);
+    	}
     }
 }
