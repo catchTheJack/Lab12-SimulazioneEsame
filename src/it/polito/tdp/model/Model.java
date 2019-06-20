@@ -20,11 +20,13 @@ public class Model {
 	private EventsDao edao ;
 	private Graph<Integer,DefaultWeightedEdge> grafo ;
 	private List<Integer> distretti;
+	private Simulatore s ;
 	
 	
 	public Model() {
 		edao = new EventsDao();
 		grafo = new SimpleWeightedGraph<Integer,DefaultWeightedEdge>(DefaultWeightedEdge.class);
+		s = new Simulatore();
 		
 	}
 	
@@ -72,4 +74,15 @@ public class Model {
 		Collections.sort(miei_vicini, new SortDistanza());
 		return miei_vicini;
 	}
+
+	public Graph<Integer, DefaultWeightedEdge> getGrafo() {
+		return grafo;
+	}
+	
+	public String simula(int anno, int mese , int giorno , int numero_agenti) {
+		s.init(anno, mese, giorno, numero_agenti);
+		s.run();
+		return s.getResult();
+	}
+	
 }

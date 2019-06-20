@@ -12,14 +12,17 @@ import it.polito.tdp.model.Event;
 
 public class EventsDao {
 	
-	public List<Event> listAllEvents(){
-		String sql = "SELECT * FROM events" ;
+	public List<Event> listAllEventsByDate(int anno,int mese,int giorno){
+		String sql = "SELECT * FROM events WHERE YEAR(reported_date)= ? AND MONTH(reported_date)=? AND DAY(reported_date)=?" ;
 		try {
 			Connection conn = DBConnect.getConnection() ;
 
 			PreparedStatement st = conn.prepareStatement(sql) ;
-			
 			List<Event> list = new ArrayList<>() ;
+			
+			st.setInt(1, anno);
+			st.setInt(2, mese);
+			st.setInt(3, giorno);
 			
 			ResultSet res = st.executeQuery() ;
 			
@@ -127,5 +130,43 @@ public class EventsDao {
 			e.printStackTrace();
 			return null ;
 		}
+	}
+
+	public Integer getPoliceStation(int anno) {
+		
+		String sql = "SELECT district_id, COUNT(*) AS conteggio "
+				+ "FROM events "
+				+ "WHERE YEAR(reported_date)=? "
+				+ "GROUP BY district_id "
+				+ "ORDER BY COUNT(*) asc";
+		try {
+			Connection conn = DBConnect.getConnection() ;
+			
+			
+			PreparedStatement st = conn.prepareStatement(sql) ;
+			st.setInt(1, anno);
+			ResultSet res = st.executeQuery() ;
+			
+			if(res.next()) {
+				try {
+					conn.close();
+					return res.getInt("district_id");
+					
+				} catch (Throwable t) {
+					t.printStackTrace();
+					System.out.println(res.getInt("id"));
+				}
+			}
+			
+			conn.close();
+			return null;
+			
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null ;
+		}
+		
 	}
 }

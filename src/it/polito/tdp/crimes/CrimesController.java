@@ -30,10 +30,10 @@ public class CrimesController {
     private ComboBox<Integer> boxAnno; // Value injected by FXMLLoader
 
     @FXML // fx:id="boxMese"
-    private ComboBox<?> boxMese; // Value injected by FXMLLoader
+    private ComboBox<Integer> boxMese; // Value injected by FXMLLoader
 
     @FXML // fx:id="boxGiorno"
-    private ComboBox<?> boxGiorno; // Value injected by FXMLLoader
+    private ComboBox<Integer> boxGiorno; // Value injected by FXMLLoader
 
     @FXML // fx:id="btnCreaReteCittadina"
     private Button btnCreaReteCittadina; // Value injected by FXMLLoader
@@ -58,6 +58,12 @@ public class CrimesController {
 
     @FXML
     void doSimula(ActionEvent event) {
+    	int anno = boxAnno.getValue();
+    	int mese = boxMese.getValue();
+    	int giorno = boxGiorno.getValue();
+    	int agenti = Integer.parseInt(txtN.getText());
+    	txtResult.clear();
+    	txtResult.appendText(model.simula(anno, mese, giorno, agenti));
 
     }
 
@@ -78,5 +84,12 @@ public class CrimesController {
     	for( int i = 2014 ; i<2018 ; i++) {
     	boxAnno.getItems().add(i);
     	}
+    	for( int i = 1; i<13; i++) {
+    		boxMese.getItems().add(i);
+    	}
+    	for( int i = 1; i<32; i++) {
+    		boxGiorno.getItems().add(i);
+    	}
+    	
     }
 }
